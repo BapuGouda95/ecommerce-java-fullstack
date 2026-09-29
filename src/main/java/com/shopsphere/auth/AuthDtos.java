@@ -1,0 +1,3 @@
+package com.shopsphere.auth;
+import jakarta.validation.constraints.*; import com.shopsphere.user.Role;
+public final class AuthDtos{private AuthDtos(){} public record RegisterRequest(@NotBlank @Size(max=80) String name,@Email @NotBlank String email,@NotBlank @Size(min=6,max=100) String password){} public record LoginRequest(@Email @NotBlank String email,@NotBlank String password){} public record AuthResponse(String token,Long userId,String name,String email,Role role){}}
