@@ -15,18 +15,10 @@ services:
     healthCheckPath: /api/products
     autoDeployTrigger: commit
     envVars:
-      - key: DB_HOST
+      - key: DB_URL
         fromDatabase:
           name: shopsphere-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: shopsphere-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: shopsphere-db
-          property: database
+          property: connectionString
       - key: DB_USERNAME
         fromDatabase:
           name: shopsphere-db
