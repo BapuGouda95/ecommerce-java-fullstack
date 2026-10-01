@@ -5,6 +5,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Base64;
+import java.security.MessageDigest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +41,15 @@ public class JwtService {
     }
 
     public String getRole(String token) {
-        return verifiedPayload(token).replaceAll(".*\"role\":\"([^\"]+)\".*", "$1");
+        String json = verifiedPayload(token);
+        long exp = Long.parseLong(json.replaceAll(".*\"exp\":(\\d+).*", "$1"));
+        if (exp <= Instant.now().getEpochSecond()) throw new IllegalArgumentException("Token expired");
+        return json.replaceAll(".*\"role\":\"([^\"]+)\".*", "$1");
     }
 
     private String verifiedPayload(String token) {
         String[] parts = token.split("\\.");
-        if (parts.length != 3 || !sign(parts[0] + "." + parts[1]).equals(parts[2])) {
+        if (parts.length != 3 || !MessageDigest.isEqual(sign(parts[0] + "." + parts[1]).getBytes(StandardCharsets.US_ASCII), parts[2].getBytes(StandardCharsets.US_ASCII))) {
             throw new IllegalArgumentException("Invalid token");
         }
         return new String(Base64.getUrlDecoder().decode(parts[1]), StandardCharsets.UTF_8);
