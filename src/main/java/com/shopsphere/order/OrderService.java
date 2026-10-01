@@ -60,6 +60,20 @@ public class OrderService {
     public Order updateStatus(Long id, OrderStatus status) {
         Order o = orders.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        OrderStatus current = o.getStatus();
+        if (current == OrderStatus.CANCELLED || current == OrderStatus.DELIVERED) {
+            throw new IllegalArgumentException("Order can no longer be changed");
+        }
+        if (status == OrderStatus.CANCELLED) {
+            if (current != OrderStatus.PLACED && current != OrderStatus.CONFIRMED) {
+                throw new IllegalArgumentException("Only placed or confirmed orders can be cancelled");
+            }
+            for (OrderItem item : o.getItems()) {
+                Product p = products.findById(item.getProductId())
+                        .orElseThrow(() -> new IllegalArgumentException("Product no longer exists: " + item.getProductId()));
+                p.setStock(p.getStock() + item.getQuantity());
+            }
+        }
         o.setStatus(status);
         return orders.save(o);
     }
