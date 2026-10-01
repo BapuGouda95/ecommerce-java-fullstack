@@ -15,7 +15,7 @@ services:
     healthCheckPath: /api/products
     autoDeployTrigger: commit
     envVars:
-      - key: DB_URL
+      - key: DB_URL_RAW
         fromDatabase:
           name: shopsphere-db
           property: connectionString
