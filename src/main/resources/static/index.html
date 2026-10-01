@@ -1,10 +1,71 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ShopSphere | E-Commerce</title><link rel="stylesheet" href="/style.css"></head>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ShopSphere | Java Full-Stack Store</title>
+<link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<header><div class="brand">ShopSphere</div><nav><a href="#home">Home</a><a href="#products">Products</a><button id="cartBtn">Cart <span id="count">0</span></button></nav></header>
-<main id="home"><section class="hero"><div><p class="eyebrow">JAVA FULL-STACK STORE</p><h1>Simple shopping.<br><span>Built properly.</span></h1><p>Explore quality products powered by a Spring Boot REST API and MySQL.</p><a class="primary" href="#products">Shop now</a></div></section>
-<section id="products" class="catalog"><div class="section-head"><div><p class="eyebrow">COLLECTION</p><h2>Featured products</h2></div><div class="controls"><input id="search" placeholder="Search products..."><select id="category"><option value="">All categories</option><option>Electronics</option><option>Fashion</option><option>Accessories</option></select></div></div><div id="grid" class="grid"></div></section></main>
-<aside id="cart" class="drawer"><div class="drawer-head"><h2>Your cart</h2><button onclick="toggleCart()">×</button></div><div id="cartItems"></div><div class="total"><span>Total</span><strong id="total">₹0</strong></div><button class="primary checkout" onclick="checkout()">Checkout</button></aside>
-<div id="toast"></div><script src="/app.js"></script></body></html>
+<header>
+  <a class="brand" href="/">ShopSphere</a>
+  <nav>
+    <a href="#products">Products</a>
+    <button id="ordersBtn" class="ghost hidden">My Orders</button>
+    <a id="adminLink" class="hidden" href="/admin.html">Admin</a>
+    <button id="authBtn" class="ghost">Login</button>
+    <button id="cartBtn" class="cart-btn">Cart <span id="count">0</span></button>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div>
+    <p class="eyebrow">JAVA FULL-STACK E-COMMERCE</p>
+    <h1>Simple shopping.<br><span>Built properly.</span></h1>
+    <p>Shop a curated collection with a Spring Boot REST API, MySQL persistence, JWT authentication and a responsive frontend.</p>
+    <a class="primary" href="#products">Explore products</a>
+  </div>
+</section>
+
+<section id="products" class="catalog">
+  <div class="section-head">
+    <div><p class="eyebrow">COLLECTION</p><h2>Products</h2></div>
+    <div class="controls"><input id="search" placeholder="Search products..."><select id="category"><option value="">All categories</option><option>Electronics</option><option>Fashion</option><option>Accessories</option></select></div>
+  </div>
+  <div id="grid" class="grid"></div>
+</section>
+
+<section id="ordersSection" class="orders hidden">
+  <div class="section-head"><div><p class="eyebrow">ACCOUNT</p><h2>My orders</h2></div></div>
+  <div id="ordersList"></div>
+</section>
+</main>
+
+<aside id="cart" class="drawer">
+  <div class="drawer-head"><h2>Your cart</h2><button onclick="toggleCart()">×</button></div>
+  <div id="cartItems"></div>
+  <div class="total"><span>Total</span><strong id="total">₹0</strong></div>
+  <button class="primary checkout" onclick="openCheckout()">Checkout</button>
+</aside>
+
+<div id="authModal" class="modal"><div class="modal-card">
+  <button class="modal-close" onclick="closeModal('authModal')">×</button>
+  <div class="tabs"><button id="loginTab" class="active" onclick="showAuth('login')">Login</button><button id="registerTab" onclick="showAuth('register')">Register</button></div>
+  <form id="authForm">
+    <input id="authName" class="optional" placeholder="Full name" maxlength="80">
+    <input id="authEmail" type="email" placeholder="Email" required>
+    <input id="authPassword" type="password" placeholder="Password" minlength="6" required>
+    <button class="primary" type="submit" id="authSubmit">Login</button>
+  </form>
+  <p id="authMessage" class="form-message"></p>
+</div></div>
+
+<div id="checkoutModal" class="modal"><div class="modal-card">
+  <button class="modal-close" onclick="closeModal('checkoutModal')">×</button>
+  <h2>Checkout</h2><p class="muted">Enter your delivery address. Payment is simulated for this portfolio project.</p>
+  <form id="checkoutForm"><textarea id="address" maxlength="500" required placeholder="House / Flat, Street, City, State, PIN"></textarea><button class="primary" type="submit">Place order</button></form>
+</div></div>
+
+<div id="toast"></div>
+<script src="/app.js"></script>
+</body></html>
